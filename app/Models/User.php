@@ -7,11 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Althinect\FilamentSpatieRolesPermissions\Concerns\HasSuperAdmin;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    use HasSuperAdmin;
     /**
      * The attributes that are mass assignable.
      *
