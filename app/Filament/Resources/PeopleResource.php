@@ -12,7 +12,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use App\Filament\Imports\PeopleImporter;
 use Filament\Tables\Actions\CreateAction;
-
 use Filament\Tables\Actions\ImportAction;
 use App\Filament\Resources\PeopleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;

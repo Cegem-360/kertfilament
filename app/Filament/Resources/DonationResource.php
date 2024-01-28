@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Imports\DonationImporter;
 use App\Filament\Resources\DonationResource\Pages;
 use App\Filament\Resources\DonationResource\RelationManagers;
 use App\Models\Donation;
@@ -12,6 +13,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Actions\ImportAction;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Blade;
 
 class DonationResource extends Resource
 {
@@ -90,12 +94,28 @@ class DonationResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make(), Tables\Actions\Action::make('pdf')
+                    ->label('PDF')
+                    ->color('success')
+                    ->icon('heroicon-s-arrow-small-down')
+                    ->action(function (Donation $record) {
+                        return response()->streamDownload(
+                            callback: function () use ($record) {
+                                echo Pdf::loadHtml(
+                                    Blade::render('pdf', ['record' => $record])
+                                )->stream();
+                            },
+                            name: $record->foundation_name . '.pdf'
+                        );
+                    }),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])->headerActions([
+                ImportAction::make()
+                    ->importer(DonationImporter::class),
             ]);
     }
 
