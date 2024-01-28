@@ -22,8 +22,8 @@ class Donation extends Model
         'foundation_tax_identification_number',
         'donation_date',
         'donation_amount',
-        'donation_type',
-        'person_id',
+        'donation_type_id',
+        'people_id',
         'family_id',
     ];
 
@@ -42,15 +42,24 @@ class Donation extends Model
      */
     public function people(): hasOne
     {
-        return $this->hasOne(Person::class, 'id', 'person_id');
+        return $this->hasOne(People::class);
     }
     /**
      * Get the donation that belongsTo family
      *
-     * @return \Illuminate\Database\Eloquent\Relations\belongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function family(): belongsTo
+    public function family(): BelongsTo
     {
-        return $this->belongsTo(Family::class, 'id', 'family_id');
+        return $this->belongsTo(Family::class);
+    }
+    /**
+     * Get the donation that belongsTo family
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function donationType(): BelongsTo
+    {
+        return $this->belongsTo(DonationType::class);
     }
 }

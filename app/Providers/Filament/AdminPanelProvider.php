@@ -58,6 +58,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ], isPersistent: true)->unsavedChangesAlerts(condition: false)->spa(condition: true);
+            ], isPersistent: true)->spa(condition: true);
     }
 }

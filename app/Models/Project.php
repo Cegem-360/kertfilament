@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Camp;
-use App\Models\Person;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -30,7 +29,7 @@ class Project extends Model
     ];
     public function people()
     {
-        return $this->belongsToMany(Person::class, 'projects_people');
+        return $this->belongsToMany(People::class, 'projects_people');
     }
     public function camps()
     {

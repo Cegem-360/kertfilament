@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PersonResource\Pages;
-use App\Filament\Resources\PersonResource\RelationManagers;
-use App\Models\Person;
+use App\Filament\Resources\DonationTypeResource\Pages;
+use App\Filament\Resources\DonationTypeResource\RelationManagers;
+use App\Models\DonationType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PersonResource extends Resource
+class DonationTypeResource extends Resource
 {
-    protected static ?string $model = Person::class;
+    protected static ?string $model = DonationType::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,7 +23,9 @@ class PersonResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +33,16 @@ class PersonResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -56,9 +67,9 @@ class PersonResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPeople::route('/'),
-            'create' => Pages\CreatePerson::route('/create'),
-            'edit' => Pages\EditPerson::route('/{record}/edit'),
+            'index' => Pages\ListDonationTypes::route('/'),
+            'create' => Pages\CreateDonationType::route('/create'),
+            'edit' => Pages\EditDonationType::route('/{record}/edit'),
         ];
     }
 }

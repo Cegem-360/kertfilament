@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FamilyResource\Pages;
-use App\Filament\Resources\FamilyResource\RelationManagers;
-use App\Models\Family;
+use App\Filament\Resources\CampResource\Pages;
+use App\Filament\Resources\CampResource\RelationManagers;
+use App\Models\Camp;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class FamilyResource extends Resource
+class CampResource extends Resource
 {
-    protected static ?string $model = Family::class;
+    protected static ?string $model = Camp::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -23,10 +23,7 @@ class FamilyResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('comment')
+                Forms\Components\TextInput::make('camp_name')
                     ->maxLength(100),
             ]);
     }
@@ -35,9 +32,7 @@ class FamilyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('comment')
+                Tables\Columns\TextColumn::make('camp_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -71,9 +66,9 @@ class FamilyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFamilies::route('/'),
-            'create' => Pages\CreateFamily::route('/create'),
-            'edit' => Pages\EditFamily::route('/{record}/edit'),
+            'index' => Pages\ListCamps::route('/'),
+            'create' => Pages\CreateCamp::route('/create'),
+            'edit' => Pages\EditCamp::route('/{record}/edit'),
         ];
     }
 }

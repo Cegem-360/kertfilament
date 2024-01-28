@@ -26,5 +26,8 @@ class DatabaseSeeder extends Seeder
             'guard_name' => 'web'
         ]);
         $admin->assignRole($superAdmin);
+        $this->call([
+            DonationTypeSeeder::class,
+        ]);
     }
 }

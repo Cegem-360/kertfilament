@@ -23,7 +23,32 @@ class DonationResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('foundation_name')
+                    ->required()
+                    ->maxLength(100)
+                    ->default('Különleges Ellátásban Részesülők Támogatásáért Alapítvány'),
+                Forms\Components\TextInput::make('foundation_headquarters')
+                    ->required()
+                    ->maxLength(100)
+                    ->default('3100 Salgótarján, Úttörők útja 15.'),
+                Forms\Components\TextInput::make('foundation_tax_identification_number')
+                    ->required()
+                    ->maxLength(100)
+                    ->default('18649954-1-12'),
+                Forms\Components\DateTimePicker::make('donation_date')
+                    ->required(),
+                Forms\Components\TextInput::make('donation_amount')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('people_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Select::make('donation_type_id')
+                    ->relationship('donationType', 'name')
+                    ->required(),
+                Forms\Components\Select::make('family_id')
+                    ->relationship('family', 'id')
+                    ->required(),
             ]);
     }
 
@@ -31,7 +56,35 @@ class DonationResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('foundation_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('foundation_headquarters')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('foundation_tax_identification_number')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('donation_date')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('donation_amount')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('people_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('donationType.name')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('family.id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

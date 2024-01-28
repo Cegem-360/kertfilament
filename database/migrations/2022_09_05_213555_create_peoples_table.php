@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Family;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -31,7 +32,7 @@ return new class extends Migration
             $table->string('company_name', 100)->nullable()->default('');
             $table->string('mother_birth_name', 100)->nullable()->default('');
             $table->string('dead_name', 100)->nullable()->default('');
-            $table->foreignId('family_id')->nullable()->default(null)->references('id')->on('families')->onDelete('cascade'); //account number
+            $table->foreignIdFor(Family::class, 'family_id');
             $table->dateTime('dead_date')->nullable();
             $table->string('damaged')->nullable()->default("nem");
             $table->string('dead_mother_certificate', 100)->nullable()->default('');

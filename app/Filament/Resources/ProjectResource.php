@@ -23,7 +23,23 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('camp_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('project_name')
+                    ->required()
+                    ->maxLength(100),
+                Forms\Components\TextInput::make('thematics')
+                    ->maxLength(100),
+                Forms\Components\DateTimePicker::make('project_start')
+                    ->required(),
+                Forms\Components\DateTimePicker::make('project_end')
+                    ->required(),
+                Forms\Components\TextInput::make('travel_expenses')
+                    ->numeric()
+                    ->default(0),
+                Forms\Components\TextInput::make('accommodation')
+                    ->maxLength(100),
             ]);
     }
 
@@ -31,7 +47,32 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('camp_id')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('project_name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('thematics')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('project_start')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('project_end')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('travel_expenses')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('accommodation')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //

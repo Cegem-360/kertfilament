@@ -10,17 +10,17 @@ class Family extends Model
     use HasFactory;
 
     protected $fillable = [
-        'family_name',
+        'name',
         'comment',
 
     ];
     protected $casts = [];
     public function donations()
     {
-        return $this->hasMany(Donation::class, 'family_id', 'id')->orderByDesc('donation_date');
+        return $this->hasMany(Donation::class)->orderByDesc('donation_date');
     }
-    public function familyMembers()
+    public function familyPeoples()
     {
-        return $this->hasMany(Person::class, 'family_id', 'id');
+        return $this->hasMany(People::class);
     }
 }

@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Person extends Model
+class People extends Model
 {
     use HasFactory;
-
-    protected $table = 'people';
 
     /**
      * The attributes that are mass assignable.
@@ -51,13 +50,16 @@ class Person extends Model
 
     public function donations(): hasMany
     {
-        return $this->hasMany(Donation::class, 'person_id', 'id');
+        return $this->hasMany(Donation::class);
     }
     public function projects(): BelongsToMany
     {
-        return $this->belongsToMany(Project::class, 'projects_people');
+        return $this->belongsToMany(Project::class, 'projects_peoples');
     }
-
+    public function family(): BelongsTo
+    {
+        return $this->belongsTo(Family::class);
+    }
     protected $casts = [
         'date_of_birth' => 'date:Y-m-d',
         //'created_at' => 'datetime:Y-m-d',
@@ -68,10 +70,5 @@ class Person extends Model
     public function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d');
-    }
-
-    public function family(): hasOne
-    {
-        return $this->hasOne(Family::class, 'id', 'family_id');
     }
 }

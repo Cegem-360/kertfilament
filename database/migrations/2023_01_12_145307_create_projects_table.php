@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Camp;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -15,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('camp_id')->references('id')->on('camps');
+            $table->foreignIdFor(Camp::class);
             $table->string('project_name', 100)->nullable(false)->default('');
             $table->string('thematics', 100)->nullable()->default('');
             $table->dateTime('project_start')->nullable(false);

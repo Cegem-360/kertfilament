@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\People;
+use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,10 +15,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('projects_people', function (Blueprint $table) {
+        Schema::create('projects_persons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreignId('person_id')->references('id')->on('people')->onDelete('cascade');
+            $table->foreignIdFor(Project::class);
+            $table->foreignIdFor(People::class);
             $table->timestamps();
         });
     }

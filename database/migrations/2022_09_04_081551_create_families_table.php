@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('families', function (Blueprint $table) {
             $table->id();
-            $table->string('family_name', 100)->uniqid()->nullable(false)->default(NULL);
+            $table->string('name', 100)->uniqid()->nullable(false)->default(NULL);
             $table->string('comment', 100)->nullable()->default(null);
             $table->timestamps();
         });
