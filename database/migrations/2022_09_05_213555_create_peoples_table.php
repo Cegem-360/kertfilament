@@ -18,7 +18,7 @@ return new class extends Migration
             //personal
             $table->id();
             $table->string('full_name', 100)->nullable()->default('');
-            $table->dateTime('date_of_birth')->nullable();
+            $table->string('date_of_birth')->nullable();
             $table->string('birth_name', 100)->nullable()->default('');
             $table->string('place_of_birth', 100)->nullable()->default('');
             $table->string('mobile_number', 100)->nullable()->default('');
@@ -32,12 +32,10 @@ return new class extends Migration
             $table->string('company_name', 100)->nullable()->default('');
             $table->string('mother_birth_name', 100)->nullable()->default('');
             $table->string('dead_name', 100)->nullable()->default('');
-            $table->foreignIdFor(Family::class, 'family_id');
-            $table->dateTime('dead_date')->nullable();
+            $table->foreignIdFor(Family::class);
+            $table->string('dead_date')->nullable();
             $table->string('damaged')->nullable()->default("nem");
             $table->string('dead_mother_certificate', 100)->nullable()->default('');
-
-
             //company
 
             $table->timestamps();

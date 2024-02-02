@@ -2,9 +2,10 @@
 
 namespace App\Filament\Imports;
 
+use App\Models\Family;
 use App\Models\People;
-use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
+use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Models\Import;
 
 class PeopleImporter extends Importer
@@ -17,7 +18,7 @@ class PeopleImporter extends Importer
             ImportColumn::make('full_name')
                 ->rules(['max:100']),
             ImportColumn::make('date_of_birth')
-                ->rules(['datetime']),
+                ->rules(['max:255']),
             ImportColumn::make('birth_name')
                 ->rules(['max:100']),
             ImportColumn::make('place_of_birth')
@@ -34,7 +35,7 @@ class PeopleImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:100']),
             ImportColumn::make('email')
-                ->rules(['email', 'max:100']),
+                ->rules(['max:100']),
             ImportColumn::make('status')
                 ->rules(['max:100']),
             ImportColumn::make('account_number')
@@ -47,10 +48,14 @@ class PeopleImporter extends Importer
                 ->rules(['max:100']),
             ImportColumn::make('family')
                 ->requiredMapping()
-                ->relationship()
+                ->relationship('family', function (string $state): Family {
+                    return Family::query()
+                        ->where('name', $state)
+                        ->first();
+                })
                 ->rules(['required']),
             ImportColumn::make('dead_date')
-                ->rules(['datetime']),
+                ->rules(['max:255']),
             ImportColumn::make('damaged')
                 ->rules(['max:255']),
             ImportColumn::make('dead_mother_certificate')
@@ -60,12 +65,27 @@ class PeopleImporter extends Importer
 
     public function resolveRecord(): ?People
     {
-        // return People::firstOrNew([
-        //     // Update existing records, matching them by `$this->data['column_name']`
-        //     'email' => $this->data['email'],
-        // ]);
-
-        return new People();
+        return People::firstOrNew([
+            'full_name' => $this->data['full_name'],
+            'date_of_birth' => $this->data['date_of_birth'],
+            'birth_name' => $this->data['birth_name'],
+            'place_of_birth' => $this->data['place_of_birth'],
+            'mobile_number' => $this->data['mobile_number'],
+            'postal_code' => $this->data['postal_code'],
+            'postal_city' => $this->data['postal_city'],
+            'postal_street' => $this->data['postal_street'],
+            'tax_identification_number' => $this->data['tax_identification_number'],
+            'email' => $this->data['email'],
+            'status' => $this->data['status'],
+            'account_number' => $this->data['account_number'],
+            'company_name' => $this->data['company_name'],
+            'mother_birth_name' => $this->data['mother_birth_name'],
+            'dead_name' => $this->data['dead_name'],
+            'dead_date' => $this->data['dead_date'],
+            'damaged' => $this->data['damaged'],
+            'dead_mother_certificate' => $this->data['dead_mother_certificate'],
+            'family_id' => $this->data['family'],
+        ]);
     }
 
     public static function getCompletedNotificationBody(Import $import): string

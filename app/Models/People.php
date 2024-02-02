@@ -40,7 +40,6 @@ class People extends Model
         'dead_date',
         'damaged',
         'dead_mother_certificate',
-
     ];
 
     /* public function company(): hasOne
@@ -61,7 +60,6 @@ class People extends Model
         return $this->belongsTo(Family::class);
     }
     protected $casts = [
-        'date_of_birth' => 'date:Y-m-d',
         //'created_at' => 'datetime:Y-m-d',
         // 'updated_at' => 'datetime:Y-m-d',
     ];
