@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\PeopleExporter;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Actions;
@@ -16,6 +17,8 @@ use Filament\Tables\Actions\ImportAction;
 use App\Filament\Resources\PeopleResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\PeopleResource\RelationManagers;
+use Filament\Actions\Exports\Exporter;
+use Filament\Tables\Actions\ExportAction;
 
 class PeopleResource extends Resource
 {
@@ -136,6 +139,8 @@ class PeopleResource extends Resource
             ->headerActions([
                 ImportAction::make()
                     ->importer(PeopleImporter::class),
+                ExportAction::make()
+                    ->exporter(PeopleExporter::class),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

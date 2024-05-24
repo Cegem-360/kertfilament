@@ -2,20 +2,27 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Imports\DonationImporter;
-use App\Filament\Resources\DonationResource\Pages;
-use App\Filament\Resources\DonationResource\RelationManagers;
-use App\Models\Donation;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Donation;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Actions\ImportAction;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\Select;
 use Illuminate\Support\Facades\Blade;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Actions\ImportAction;
+use App\Filament\Imports\DonationImporter;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Tables\Actions\DeleteBulkAction;
+use App\Filament\Resources\DonationResource\Pages\EditDonation;
+use App\Filament\Resources\DonationResource\Pages\ListDonations;
+use App\Filament\Resources\DonationResource\Pages\CreateDonation;
 
 class DonationResource extends Resource
 {
@@ -27,30 +34,30 @@ class DonationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('foundation_name')
+                TextInput::make('foundation_name')
                     ->required()
                     ->maxLength(100)
                     ->default('Különleges Ellátásban Részesülők Támogatásáért Alapítvány'),
-                Forms\Components\TextInput::make('foundation_headquarters')
+                TextInput::make('foundation_headquarters')
                     ->required()
                     ->maxLength(100)
                     ->default('3100 Salgótarján, Úttörők útja 15.'),
-                Forms\Components\TextInput::make('foundation_tax_identification_number')
+                TextInput::make('foundation_tax_identification_number')
                     ->required()
                     ->maxLength(100)
                     ->default('18649954-1-12'),
-                Forms\Components\DateTimePicker::make('donation_date')
+                DateTimePicker::make('donation_date')
                     ->required(),
-                Forms\Components\TextInput::make('donation_amount')
+                TextInput::make('donation_amount')
                     ->numeric()
                     ->default(0),
-                Forms\Components\TextInput::make('people_id')
+                TextInput::make('people_id')
                     ->required()
                     ->numeric(),
-                Forms\Components\Select::make('donation_type_id')
+                Select::make('donation_type_id')
                     ->relationship('donationType', 'name')
                     ->required(),
-                Forms\Components\Select::make('family_id')
+                Select::make('family_id')
                     ->relationship('family', 'id')
                     ->required(),
             ]);
@@ -60,32 +67,32 @@ class DonationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('foundation_name')
+                TextColumn::make('foundation_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('foundation_headquarters')
+                TextColumn::make('foundation_headquarters')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('foundation_tax_identification_number')
+                TextColumn::make('foundation_tax_identification_number')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('donation_date')
+                TextColumn::make('donation_date')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('donation_amount')
+                TextColumn::make('donation_amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('people_id')
+                TextColumn::make('people_id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('donationType.name')
+                TextColumn::make('donationType.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('family.id')
+                TextColumn::make('family.id')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -94,7 +101,7 @@ class DonationResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(), Tables\Actions\Action::make('pdf')
+                EditAction::make(), Action::make('pdf')
                     ->label('PDF')
                     ->color('success')
                     ->icon('heroicon-s-arrow-small-down')
@@ -110,8 +117,8 @@ class DonationResource extends Resource
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])->headerActions([
                 ImportAction::make()
@@ -129,9 +136,9 @@ class DonationResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDonations::route('/'),
-            'create' => Pages\CreateDonation::route('/create'),
-            'edit' => Pages\EditDonation::route('/{record}/edit'),
+            'index' => ListDonations::route('/'),
+            'create' => CreateDonation::route('/create'),
+            'edit' => EditDonation::route('/{record}/edit'),
         ];
     }
 }
